@@ -10,7 +10,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '509337de-b814-4106-9af8-0a3dbff2a363'
+  dockerRegistryServiceConnection: 'd78f780f-5e9b-44c8-8b35-a12585e1a6a5'
   imageRepository: 'alabenachourappnodedevops'
   containerRegistry: 'reactwebsite.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/backend/dockerfile'
