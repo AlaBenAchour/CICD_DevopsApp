@@ -46,6 +46,8 @@ resources:
 variables:
   dockerRegistryServiceConnection: 'acba34a4-0ebc-442d-941f-8eb99adbf80e'
   containerRegistry: 'reactwebsite.azurecr.io'
+  imageRepositoryBackend: 'alabenachourapp-backend'
+  imageRepositoryFrontend: 'alabenachourapp-frontend'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
 
@@ -60,26 +62,33 @@ stages:
     steps:
     - checkout: self
 
+    # Docker login step
+    - task: Docker@2
+      displayName: 'Login to Azure Container Registry'
+      inputs:
+        command: 'login'
+        containerRegistry: $(dockerRegistryServiceConnection)
+
     - task: DockerCompose@0
       displayName: Build Images with Docker Compose
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
         dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
-        projectName: 'alabenachourapp'  # Ensure project name is valid
+        projectName: 'app-node-devops'
         action: 'Build services'
         addPipelineDataAsLabels: false
         tags: |
           $(tag)
           latest
       env:
-        TAG: $(tag)  # Pass tag as environment variable
+        TAG: $(tag)
 
     - task: DockerCompose@0
       displayName: Push Images with Docker Compose
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
         dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
-        projectName: 'alabenachourapp'  # Ensure project name is consistent
+        projectName: 'app-node-devops'
         action: 'Push services'
       env:
-        TAG: $(tag)  # Ensure tag is available for push
+        TAG: $(tag)
