@@ -61,10 +61,11 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: DockerCompose@0
-      displayName: Build and Push Images with Docker Compose
+      displayName: Build Images with Docker Compose
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
         dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
+        projectName: 'alabenachourapp'  # Ensure project name is valid
         action: 'Build services'
         addPipelineDataAsLabels: false
         tags: |
@@ -75,4 +76,5 @@ stages:
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
         dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
+        projectName: 'app-node-devops'  # Ensure project name is consistent
         action: 'Push services'
