@@ -46,8 +46,6 @@ resources:
 variables:
   dockerRegistryServiceConnection: 'acba34a4-0ebc-442d-941f-8eb99adbf80e'
   containerRegistry: 'reactwebsite.azurecr.io'
-  imageRepositoryBackend: 'alabenachourapp-backend'
-  imageRepositoryFrontend: 'alabenachourapp-frontend'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
 
@@ -60,6 +58,8 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - checkout: self
+
     - task: DockerCompose@0
       displayName: Build Images with Docker Compose
       inputs:
@@ -71,10 +71,15 @@ stages:
         tags: |
           $(tag)
           latest
+      env:
+        TAG: $(tag)  # Pass tag as environment variable
+
     - task: DockerCompose@0
       displayName: Push Images with Docker Compose
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
         dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
-        projectName: 'app-node-devops'  # Ensure project name is consistent
+        projectName: 'alabenachourapp'  # Ensure project name is consistent
         action: 'Push services'
+      env:
+        TAG: $(tag)  # Ensure tag is available for push
