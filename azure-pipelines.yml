@@ -69,7 +69,7 @@ stages:
         command: 'login'
         containerRegistry: $(dockerRegistryServiceConnection)
 
-    - task: DockerCompose@0
+    - task: DockerCompose@1
       displayName: Build Images with Docker Compose
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
@@ -83,7 +83,7 @@ stages:
       env:
         TAG: $(tag)
 
-    - task: DockerCompose@0
+    - task: DockerCompose@1
       displayName: Push Images with Docker Compose
       inputs:
         containerregistry: $(dockerRegistryServiceConnection)
