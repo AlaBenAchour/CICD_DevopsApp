@@ -1,0 +1,31 @@
+services:
+  react-app:
+    build:
+      context: ./frontend  
+      dockerfile: dockerfile
+    image: reactwebsite.azurecr.io/alabenachourapp-frontend:${TAG}  # Explicit image name
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - mern-app
+
+  api-server:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    image: reactwebsite.azurecr.io/alabenachourapp-backend:${TAG}  # Explicit image name
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URL=${MONGO_URL}
+    networks:
+      - mern-app
+    env_file:
+      - .env
+
+networks:
+  mern-app:
+    driver: bridge
+
