@@ -12,19 +12,34 @@ This guide explains how to run the app locally, use Docker for containerization,
 
 ### Step 2: Run the Backend App
 1. Navigate to the `backend` folder:
+
    ```bash
    cd backend
-2. run node-module
+
+2. run `node-module`
+
+    ```bash
     npm install
-3. Start the backend app:
+
+3. Start the `backend` app:
+
+    ```bash
    npm start
+
 ### Step 3: Step 3: Run the Frontend App
 1. Navigate to the `frontend` folder:
+
    ```bash
    cd frontend 
-2. run node-module
+
+2. run `node-module`
+
+    ```bash
     npm install
-3. Start the frontend app:
+
+3. Start the `frontend` app:
+
+   ```bash
    npm start
 
 Note: Ensure the `.env` file is moved into the `frontend` folder for the app to run correctly locally.
