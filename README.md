@@ -96,7 +96,8 @@ In the `DataService`, create a connection and add your current IP address. This 
 
 ### Step 4: Stop and Remove Containers
 
-To stop and delete all containers, run:
+1. To stop and delete all containers:
+
     ```bash
    docker-compose down
 
