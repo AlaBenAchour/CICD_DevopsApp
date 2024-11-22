@@ -69,7 +69,8 @@ stages:
       - task: Npm@1
         inputs:
           command: 'custom'
-          customCommand: 'test'
+          customCommand: 'run test'
+          workingDir: 'frontend'
 - stage: Build
   displayName: Build and Push Stage
   jobs:
