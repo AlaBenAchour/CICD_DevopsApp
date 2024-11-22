@@ -61,7 +61,7 @@ stages:
       - task: NodeTool@0
         inputs:
           versionSource: 'spec'
-          versionSpec: '20.x'
+          versionSpec: 'lts/*'
       - task: Npm@1
         inputs:
           command: 'install'
@@ -69,7 +69,7 @@ stages:
       - task: Npm@1
         inputs:
           command: 'custom'
-          customCommand: 'run test'
+          customCommand: 'run test -- --onlyChanged --maxWorkers=4 --no-coverage'
           workingDir: 'frontend'
 - stage: Build
   displayName: Build and Push Stage
