@@ -38,10 +38,13 @@
 #         tags: |
 #           $(tag)
 trigger:
-- main
+  branches:
+    include:
+      - main  
 
 resources:
-- repo: self
+  repositories:
+    - repository: self  
 
 variables:
   dockerRegistryServiceConnection: 'acba34a4-0ebc-442d-941f-8eb99adbf80e'
