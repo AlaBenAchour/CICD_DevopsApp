@@ -61,7 +61,7 @@ stages:
       - task: NodeTool@0
         inputs:
           versionSource: 'spec'
-          versionSpec: 'lts/*'
+          versionSpec: '18.x'
       - task: Npm@1
         inputs:
           command: 'install'
