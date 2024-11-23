@@ -38,10 +38,13 @@
 #         tags: |
 #           $(tag)
 trigger:
-- main
+  branches:
+    include:
+      - main  
 
 resources:
-- repo: self
+  repositories:
+    - repository: self  
 
 variables:
   dockerRegistryServiceConnection: 'acba34a4-0ebc-442d-941f-8eb99adbf80e'
@@ -61,14 +64,16 @@ stages:
       - task: NodeTool@0
         inputs:
           versionSource: 'spec'
-          versionSpec: '20.x'
+          versionSpec: '18.x'
       - task: Npm@1
         inputs:
           command: 'install'
+          workingDir: 'frontend'
       - task: Npm@1
         inputs:
           command: 'custom'
-          customCommand: 'test'
+          customCommand: 'run test'
+          workingDir: 'frontend'
 - stage: Build
   displayName: Build and Push Stage
   jobs:
