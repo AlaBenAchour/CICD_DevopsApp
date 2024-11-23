@@ -65,12 +65,12 @@ stages:
       - task: Npm@1
         inputs:
           command: 'install'
-          workingDir: 'frontend/src'
+          # workingDir: 'frontend/src'
       - task: Npm@1
         inputs:
           command: 'custom'
           customCommand: 'run test -- --onlyChanged --maxWorkers=4 --no-coverage'
-          workingDir: 'frontend/src'
+          # workingDir: 'frontend/src'
 - stage: Build
   displayName: Build and Push Stage
   jobs:
