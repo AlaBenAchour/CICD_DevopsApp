@@ -72,7 +72,7 @@ stages:
       - task: Npm@1
         inputs:
           command: 'custom'
-          customCommand: 'run test'
+          customCommand: 'test --maxWorkers=2'
           workingDir: 'frontend'
 - stage: Build
   displayName: Build and Push Stage
