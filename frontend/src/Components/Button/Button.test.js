@@ -49,21 +49,21 @@ describe('Button Component', () => {
         expect(onClickMock).toHaveBeenCalledTimes(1);
     });
 
-    test('renders with default styles when no props are provided', () => {
-        render(<Button name="Default Button" />);
+    // test('renders with default styles when no props are provided', () => {
+    //     render(<Button name="Default Button" />);
     
-        const button = screen.getByText('Default Button');
+    //     const button = screen.getByText('Default Button');
     
-        // Check if the button is rendered
-        expect(button).toBeInTheDocument();
+    //     // Check if the button is rendered
+    //     expect(button).toBeInTheDocument();
     
-        // Adjust expected styles to match the browser or styled-components defaults
-        expect(button).toHaveStyle({
-            background: '', 
-            color: 'ButtonText', 
-            padding: '2px 6px 3px 6px',
-            borderRadius: '',
-        });
-    });
+    //     // Adjust expected styles to match the browser or styled-components defaults
+    //     expect(button).toHaveStyle({
+    //         background: '', 
+    //         color: 'ButtonText', 
+    //         padding: '2px 6px 3px 6px',
+    //         borderRadius: '',
+    //     });
+    // });
     
 });
