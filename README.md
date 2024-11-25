@@ -11,6 +11,33 @@ This guide explains how to run the app locally, use Docker for containerization,
 ![Pull Requests](https://img.shields.io/github/issues-pr/AlaBenAchour/CICD_DevopsApp)
 ---
 
+## Table of Contents
+1. [How to Run the App Locally](#how-to-run-the-app-locally)
+   - [Step 1: Set Up MongoDB](#step-1-set-up-mongodb)
+   - [Step 2: Run the Backend App](#step-2-run-the-backend-app)
+   - [Step 3: Run the Frontend App](#step-3-run-the-frontend-app)
+2. [How to Run the App Using Docker](#how-to-run-the-app-using-docker)
+   - [Step 1: Prepare Docker Compose](#step-1-prepare-docker-compose)
+   - [Step 2: Build Docker Images](#step-2-build-docker-images)
+     - [Backend](#backend)
+     - [Frontend](#frontend)
+   - [Step 3: Run Docker Containers](#step-3-run-docker-containers)
+   - [Step 4: Stop and Remove Containers](#step-4-stop-and-remove-containers)
+3. [How to Run Azure Pipelines](#how-to-run-azure-pipelines)
+4. [Additional Notes](#additional-notes)
+
+---
+
+## Screendhots project
+
+Below are screenshots showcasing the functionality and interface of the project:
+
+### Home Page
+![Home Page](Demo/home.png)
+
+
+---
+
 ## How to Run the App Locally
 
 ### Step 1: Set Up MongoDB
@@ -121,3 +148,14 @@ In the `DataService`, create a connection and add your current IP address. This 
 
 1. Always keep `.env` files out of production Docker images.
 2. Ensure the MongoDB cluster is accessible with your IP for both local and Docker-based setups.
+
+---
+
+## Connect With Me
+
+Feel free to connect with me through any of the platforms below:
+
+- **GitHub**: [github.com/AlaBenAchour](https://github.com/AlaBenAchour)
+- **LinkedIn**: [linkedin.com/in/alabenachour](https://www.linkedin.com/in/alabenachour/)
+- **Portfolio**: [AlaBenAchour.dev](https://benachour-ala.vercel.app/)
+- **Email**: [alabenachour@example.com](mailto:alabenachour97@gmail.com)
