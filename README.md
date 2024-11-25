@@ -2,6 +2,13 @@
 
 This guide explains how to run the app locally, use Docker for containerization, and set up Azure Pipelines.
 
+![Stars](https://img.shields.io/github/stars/AlaBenAchour/CICD_DevopsApp)
+![Forks](https://img.shields.io/github/forks/AlaBenAchour/CICD_DevopsApp)
+![Watchers](https://img.shields.io/github/watchers/AlaBenAchour/CICD_DevopsApp)
+![Contributors](https://img.shields.io/github/contributors/AlaBenAchour/CICD_DevopsApp)
+![Last Commit](https://img.shields.io/github/last-commit/AlaBenAchour/CICD_DevopsApp)
+![Issues](https://img.shields.io/github/issues/AlaBenAchour/CICD_DevopsApp)
+![Pull Requests](https://img.shields.io/github/issues-pr/AlaBenAchour/CICD_DevopsApp)
 ---
 
 ## How to Run the App Locally
