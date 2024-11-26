@@ -136,8 +136,8 @@ variables:
   imageRepositoryFrontend: 'alabenachourapp-frontend'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
-  k8sNamespace: 'default' # Set the Kubernetes namespace
-  imagePullSecret: 'acr-secret' # Define a secret name for pulling images from ACR
+  k8sNamespace: 'default'
+  imagePullSecret: 'acr-secret'
   kubernetesServiceConnection: 'myappkubernetes'
 
 stages:
@@ -225,7 +225,7 @@ stages:
                 namespace: $(k8sNamespace)
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                kubernetesServiceConnection: $(kubernetesServiceConnection)
+                kubernetesServiceEndpoint: $(kubernetesServiceConnection)
 
             - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
