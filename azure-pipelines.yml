@@ -112,8 +112,8 @@ stages:
                 action: deploy
                 namespace: $(k8sNamespace)
                 manifests: |
-                 $(Build.SourcesDirectory)/kubernetes/deployment.yml
-                 $(Build.SourcesDirectory)/kubernetes/service.yml
+                 $(Build.SourcesDirectory)/manifests/deployment.yml
+                 $(Build.SourcesDirectory)/manifests/service.yml
                 containers: |
                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
