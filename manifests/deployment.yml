@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-server
-          image: reactwebsite.azurecr.io/alabenachourapp-backend:${TAG}
+          image: reactwebsite.azurecr.io/alabenachourapp-backend:${TAG}  # Using the tag from the pipeline
           ports:
             - containerPort: 5000
           env:
@@ -25,6 +25,8 @@ spec:
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGO_URL
+      imagePullSecrets:
+        - name: acr-secret  # Ensures Kubernetes can authenticate with ACR
 
 ---
 apiVersion: apps/v1
@@ -43,6 +45,8 @@ spec:
     spec:
       containers:
         - name: react-app
-          image: reactwebsite.azurecr.io/alabenachourapp-frontend:${TAG}
+          image: reactwebsite.azurecr.io/alabenachourapp-frontend:${TAG}  # Using the tag from the pipeline
           ports:
             - containerPort: 3000
+      imagePullSecrets:
+        - name: acr-secret  # Ensures Kubernetes can authenticate with ACR
