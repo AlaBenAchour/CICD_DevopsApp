@@ -22,6 +22,7 @@ variables:
   vmImageName: 'ubuntu-latest'
   k8sNamespace: 'default' # Set the Kubernetes namespace
   imagePullSecret: 'acr-secret' # Define a secret name for pulling images from ACR
+  kubernetesServiceConnection: 'myappkubernetes'
 
 stages:
 - stage: 
@@ -106,7 +107,7 @@ stages:
                 namespace: $(k8sNamespace)
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                kubernetesServiceConnection: 'myappkubernetes'
+                kubernetesServiceConnection: $(kubernetesServiceConnection) # Reference variable here
 
             - task: KubernetesManifest@0
               displayName: Deploy to Kubernetes Cluster
