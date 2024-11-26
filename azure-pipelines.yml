@@ -218,16 +218,16 @@ stages:
         runOnce:
           deploy:
             steps:
-            - task: KubernetesManifest@0
+            - task: KubernetesManifest@1
               displayName: Create imagePullSecret
               inputs:
                 action: createSecret
                 namespace: $(k8sNamespace)
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                kubernetesServiceConnection: $(kubernetesServiceConnection) # Reference variable here
+                kubernetesServiceConnection: $(kubernetesServiceConnection)
 
-            - task: KubernetesManifest@0
+            - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
               inputs:
                 action: deploy
