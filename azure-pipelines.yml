@@ -84,6 +84,18 @@ stages:
       env:
         TAG: $(tag)
 
+- stage: ListFiles
+  displayName: List Files in /home/vsts/work/1/s/
+  jobs:
+    - job: ListFiles
+      displayName: List Files in /home/vsts/work/1/s/
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - script: |
+            echo "Listing files in /home/vsts/work/1/s/"
+            ls /home/vsts/work/1/s/
+          displayName: 'List files in /home/vsts/work/1/s/'
 - stage: Deploy
   displayName: Deploy Stage
   dependsOn: Build
@@ -105,10 +117,6 @@ stages:
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
                 kubernetesServiceEndpoint: $(kubernetesServiceConnection)
-            - script: |
-                echo "Listing files in /home/vsts/work/1/s/"
-                ls -la /home/vsts/work/1/s/
-                displayName: 'List files in /home/vsts/work/1/s/'
 
             
             - task: KubernetesManifest@1
