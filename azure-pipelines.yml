@@ -107,8 +107,9 @@ stages:
                 kubernetesServiceEndpoint: $(kubernetesServiceConnection)
             - script: |
                 echo "Listing Manifest Files"
-                dir $(Build.SourcesDirectory)/CICD_DevopsApp/manifests
+                dir $(Build.SourcesDirectory)/manifests/
               displayName: Cloning Manifest Files From Repo
+            
             - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
               inputs:
