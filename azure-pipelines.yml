@@ -17,7 +17,7 @@ variables:
   vmImageName: 'ubuntu-latest'
   k8sNamespace: 'default'
   imagePullSecret: 'acr-secret'
-  kubernetesServiceConnection: 'myappkubernetes'
+  kubernetesServiceConnection: 'app-demo-app-demo-default-1732626995245'
 
 stages:
 - stage: RunTests
