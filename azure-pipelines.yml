@@ -105,15 +105,18 @@ stages:
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
                 kubernetesServiceEndpoint: $(kubernetesServiceConnection)
-
+            - script: |
+                echo "Listing Manifest Files"
+                dir $(Build.SourcesDirectory)/manifests
+              displayName: Cloning Manifest Files From Repo
             - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
               inputs:
                 action: deploy
                 namespace: $(k8sNamespace)
                 manifests: |
-                 $(Build.SourcesDirectory)/manifests/deployment.yml
-                 $(Build.SourcesDirectory)/manifests/service.yml
+                  $(Build.SourcesDirectory)/manifests/deployment.yml
+                  $(Build.SourcesDirectory)/manifests/service.yml
                 containers: |
                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
