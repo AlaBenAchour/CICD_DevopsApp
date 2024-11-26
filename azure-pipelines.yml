@@ -106,9 +106,12 @@ stages:
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
                 kubernetesServiceEndpoint: $(kubernetesServiceConnection)
             - script: |
-                echo "Listing Manifest Files"
-                dir $(Build.SourcesDirectory)/manifests/
-              displayName: Cloning Manifest Files From Repo
+                echo "Current working directory:"
+                pwd  # Prints the current working directory
+                echo "List files in the directory:"
+                ls -la  # Lists all files in the current directory
+                displayName: 'Check Working Directory'
+
             
             - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
