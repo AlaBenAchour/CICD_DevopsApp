@@ -155,9 +155,7 @@ In the `DataService`, create a connection and add your current IP address. This 
 
 Feel free to connect with me through any of the platforms below:
 
-## Connect With Me
-
 [![GitHub](https://img.shields.io/badge/GitHub-AlaBenAchour-black?style=for-the-badge&logo=github)](https://github.com/AlaBenAchour)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-AlaBenAchour-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/alabenachour/)
-[![Portfolio](https://img.shields.io/badge/Portfolio-AlaBenAchour.dev-green?style=for-the-badge&logo=google-chrome)](https://benachour-ala.vercel.app/)
-[![Gmail](https://img.shields.io/badge/Email-alabenachour@example.com-red?style=for-the-badge&logo=gmail)](mailto:alabenachour97@gmail.com)
+[![Portfolio](https://img.shields.io/badge/Portfolio-AlaBenAchour-green?style=for-the-badge&logo=google-chrome)](https://benachour-ala.vercel.app/)
+[![Gmail](https://img.shields.io/badge/Email-alabenachour97@gmail.com-red?style=for-the-badge&logo=gmail)](mailto:alabenachour97@gmail.com)
