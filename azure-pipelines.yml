@@ -106,11 +106,9 @@ stages:
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
                 kubernetesServiceEndpoint: $(kubernetesServiceConnection)
             - script: |
-                echo "Current working directory:"
-                pwd  # Prints the current working directory
-                echo "List files in the directory:"
-                ls -la  # Lists all files in the current directory
-                displayName: 'Check Working Directory'
+                echo "Listing files in /home/vsts/work/1/s/"
+                ls -la /home/vsts/work/1/s/
+                displayName: 'List files in /home/vsts/work/1/s/'
 
             
             - task: KubernetesManifest@1
