@@ -225,7 +225,7 @@ stages:
                 namespace: $(k8sNamespace)
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                kubernetesServiceConnection: $(kubernetesServiceConnection)
+                kubernetesServiceConnection: 'myappkubernetes'
 
             - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
