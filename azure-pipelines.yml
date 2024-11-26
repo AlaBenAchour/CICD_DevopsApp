@@ -53,6 +53,8 @@ variables:
   imageRepositoryFrontend: 'alabenachourapp-frontend'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
+  k8sNamespace: 'default' # Set the Kubernetes namespace
+  imagePullSecret: 'acr-secret' # Define a secret name for pulling images from ACR
 
 stages:
 - stage: 
@@ -117,3 +119,35 @@ stages:
         action: 'Push services'
       env:
         TAG: $(tag)
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+  jobs:
+    - deployment: Deploy
+      displayName: Deploy to Kubernetes
+      pool:
+        vmImage: $(vmImageName)
+      environment: 'app-demo.default' 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: KubernetesManifest@0
+              displayName: Create imagePullSecret
+              inputs:
+                action: createSecret
+                namespace: $(k8sNamespace)
+                secretName: $(imagePullSecret)
+                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+            - task: KubernetesManifest@0
+              displayName: Deploy to Kubernetes Cluster
+              inputs:
+                action: deploy
+                namespace: $(k8sNamespace)
+                manifests: |
+                  $(System.ArtifactsDirectory)/manifests/deployment.yml
+                  $(System.ArtifactsDirectory)/manifests/service.yml
+                containers: |
+                  $(containerRegistry)/$(imageRepositoryBackend):$(tag)
+                  $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
