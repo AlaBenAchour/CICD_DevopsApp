@@ -16,8 +16,8 @@ variables:
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
   k8sNamespace: 'default'
-  imagePullSecret: 'acr-secret'
-  kubernetesServiceConnection: 'app-demo-app-demo-default-1732626995245'
+  # imagePullSecret: 'acr-secret'
+  # kubernetesServiceConnection: 'app-demo-app-demo-default-1732626995245'
 
 stages:
 - stage: RunTests
@@ -96,38 +96,72 @@ stages:
             echo "Listing files in /home/vsts/work/1/s/"
             ls /home/vsts/work/1/s/
           displayName: 'List files in /home/vsts/work/1/s/'
-          
 - stage: Deploy
-  displayName: Deploy Stage
+  displayName: Deploy to Kubernetes
   dependsOn: Build
   jobs:
-    - deployment: Deploy
-      displayName: Deploy to Kubernetes
+    - job: Deploy
+      displayName: Deploy to Kubernetes Cluster
       pool:
         vmImage: $(vmImageName)
-      environment: 'app-demo' 
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: KubernetesManifest@1
-              displayName: Create imagePullSecret
-              inputs:
-                action: createSecret
-                namespace: $(k8sNamespace)
-                secretName: $(imagePullSecret)
-                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+      steps:
+        - task: Kubernetes@1
+          displayName: 'Set Kubernetes Context'
+          inputs:
+            connectionType: 'Azure Resource Manager'
+            azureSubscriptionEndpoint: 'Azure for Students(d78f780f-5e9b-44c8-8b35-a12585e1a6a5)'
+            azureResourceGroup: 'AppNodeDevops'
+            kubernetesCluster: 'app-demo'
+            namespace: $(k8sNamespace)
+
+        - script: |
+            echo "Deploying application to Kubernetes"
+            kubectl apply -f manifests/deployment.yml -n $(k8sNamespace)
+            kubectl apply -f manifests/server.yml -n $(k8sNamespace)
+          displayName: Deploy Manifests to Kubernetes
+
+        - script: |
+            echo "Checking deployment status..."
+            kubectl rollout status deployment/api-server -n $(k8sNamespace)
+            kubectl rollout status deployment/react-app -n $(k8sNamespace)
+          displayName: Check Deployment Status
+
+        - script: |
+            echo "Kubernetes Services:"
+            kubectl get services -n $(k8sNamespace)
+          displayName: Get Services Information
+          
+# - stage: Deploy
+#   displayName: Deploy Stage
+#   dependsOn: Build
+#   jobs:
+#     - deployment: Deploy
+#       displayName: Deploy to Kubernetes
+#       pool:
+#         vmImage: $(vmImageName)
+#       environment: 'app-demo' 
+#       strategy:
+#         runOnce:
+#           deploy:
+#             steps:
+#             - task: KubernetesManifest@1
+#               displayName: Create imagePullSecret
+#               inputs:
+#                 action: createSecret
+#                 namespace: $(k8sNamespace)
+#                 secretName: $(imagePullSecret)
+#                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+#                 kubernetesServiceEndpoint: $(kubernetesServiceConnection)
 
             
-            - task: KubernetesManifest@1
-              displayName: Deploy to Kubernetes Cluster
-              inputs:
-                action: deploy
-                namespace: $(k8sNamespace)
-                manifests: |
-                  $(Build.SourcesDirectory)/manifests/deployment.yml
-                  $(Build.SourcesDirectory)/manifests/service.yml
-                containers: |
-                  $(containerRegistry)/$(imageRepositoryBackend):$(tag)
-                  $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
+#             - task: KubernetesManifest@1
+#               displayName: Deploy to Kubernetes Cluster
+#               inputs:
+#                 action: deploy
+#                 namespace: $(k8sNamespace)
+#                 manifests: |
+#                   $(Build.SourcesDirectory)/manifests/deployment.yml
+#                   $(Build.SourcesDirectory)/manifests/service.yml
+#                 containers: |
+#                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
+#                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
