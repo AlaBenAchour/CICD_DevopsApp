@@ -152,8 +152,8 @@ stages:
                 action: deploy
                 namespace: $(k8sNamespace)
                 manifests: |
-                  $(Build.SourcesDirectory)/manifests/deployment.yml
-                  $(Build.SourcesDirectory)/manifests/service.yml
+                  $(Pipline.Workspace)/manifests/deployment.yml
+                  $(Pipline.Workspace)/manifests/service.yml
                 containers: |
                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
