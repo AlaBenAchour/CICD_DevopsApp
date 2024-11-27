@@ -113,11 +113,17 @@ stages:
             azureResourceGroup: 'AppNodeDevops'
             kubernetesCluster: 'app-demo'
             namespace: $(k8sNamespace)
+        - task: CopyFiles@2
+          inputs:
+          SourceFolder: '$(Build.SourcesDirectory)/manifests'
+          Contents: '**/*'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/manifests'
 
         - script: |
             echo "Deploying application to Kubernetes"
-            kubectl apply -f manifests/deployment.yml -n $(k8sNamespace)
-            kubectl apply -f manifests/service.yml -n $(k8sNamespace)
+            kubectl apply -f $(Build.ArtifactStagingDirectory)/manifests/deployment.yml --validate=false -n $(k8sNamespace)
+            kubectl apply -f $(Build.ArtifactStagingDirectory)/manifests/service.yml --validate=false -n $(k8sNamespace)
+
           displayName: Deploy Manifests to Kubernetes
 
         - script: |
