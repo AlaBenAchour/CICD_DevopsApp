@@ -117,7 +117,7 @@ stages:
         - script: |
             echo "Deploying application to Kubernetes"
             kubectl apply -f manifests/deployment.yml -n $(k8sNamespace)
-            kubectl apply -f manifests/server.yml -n $(k8sNamespace)
+            kubectl apply -f manifests/service.yml -n $(k8sNamespace)
           displayName: Deploy Manifests to Kubernetes
 
         - script: |
