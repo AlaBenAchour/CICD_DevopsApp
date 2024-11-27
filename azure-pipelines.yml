@@ -115,9 +115,9 @@ stages:
             namespace: $(k8sNamespace)
         - task: CopyFiles@2
           inputs:
-          SourceFolder: '$(Build.SourcesDirectory)/manifests'
-          Contents: '**/*'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/manifests'
+            SourceFolder: '$(Build.SourcesDirectory)/manifests'
+            Contents: '**/*'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)/manifests'
 
         - script: |
             echo "Deploying application to Kubernetes"
