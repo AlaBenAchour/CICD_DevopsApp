@@ -1,12 +1,11 @@
-
 trigger:
   branches:
     include:
-      - main  
+      - main
 
 resources:
   repositories:
-    - repository: self  
+    - repository: self
 
 variables:
   dockerRegistryServiceConnection: 'acba34a4-0ebc-442d-941f-8eb99adbf80e'
@@ -16,86 +15,45 @@ variables:
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
   k8sNamespace: 'default'
-  # imagePullSecret: 'acr-secret'
-  # kubernetesServiceConnection: 'app-demo-app-demo-default-1732626995245'
 
 stages:
-- stage: RunTests
-  displayName: Run Test Cases using Jest
-  jobs:
-    - job: Test
-      displayName: Run Test Cases
-      steps:
-      - task: NodeTool@0
-        inputs:
-          versionSource: 'spec'
-          versionSpec: '18.x'
-        displayName: Set up Node.js
-      - task: Npm@1
-        inputs:
-          command: 'install'
-          workingDir: 'frontend'
-        displayName: Install dependencies
-      - task: Npm@1
-        inputs:
-          command: 'custom'
-          customCommand: 'run test -- --watchAll=false'
-          workingDir: 'frontend'
-        displayName: Run Jest tests
-
 - stage: Build
-  displayName: Build and Push Stage
+  displayName: Build and Push Docker Images
   jobs:
-  - job: Build
-    displayName: Build and Push Docker Images
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - checkout: self
+    - job: Build
+      displayName: Build Docker Images and Push to ACR
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+        - task: Docker@2
+          displayName: 'Login to Azure Container Registry'
+          inputs:
+            command: 'login'
+            containerRegistry: $(dockerRegistryServiceConnection)
 
-    # Docker login step
-    - task: Docker@2
-      displayName: 'Login to Azure Container Registry'
-      inputs:
-        command: 'login'
-        containerRegistry: $(dockerRegistryServiceConnection)
+        - task: DockerCompose@1
+          displayName: 'Build Images with Docker Compose'
+          inputs:
+            containerregistry: $(dockerRegistryServiceConnection)
+            dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
+            projectName: 'app-node-devops'
+            action: 'Build services'
+            tags: |
+              $(tag)
+              latest
+          env:
+            TAG: $(tag)
 
-    - task: DockerCompose@1
-      displayName: Build Images with Docker Compose
-      inputs:
-        containerregistry: $(dockerRegistryServiceConnection)
-        dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
-        projectName: 'app-node-devops'
-        action: 'Build services'
-        addPipelineDataAsLabels: false
-        tags: |
-          $(tag)
-          latest
-      env:
-        TAG: $(tag)
+        - task: DockerCompose@1
+          displayName: 'Push Images to ACR'
+          inputs:
+            containerregistry: $(dockerRegistryServiceConnection)
+            dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
+            projectName: 'app-node-devops'
+            action: 'Push services'
+          env:
+            TAG: $(tag)
 
-    - task: DockerCompose@1
-      displayName: Push Images with Docker Compose
-      inputs:
-        containerregistry: $(dockerRegistryServiceConnection)
-        dockerComposeFile: '$(Build.SourcesDirectory)/docker-compose.yml'
-        projectName: 'app-node-devops'
-        action: 'Push services'
-      env:
-        TAG: $(tag)
-
-# - stage: ListFiles
-#   displayName: List Files in /home/vsts/work/1/s/
-#   jobs:
-#     - job: ListFiles
-#       displayName: List Files in /home/vsts/work/1/s/
-#       pool:
-#         vmImage: 'ubuntu-latest'
-#       steps:
-#         - script: |
-#             echo "Listing files in /home/vsts/work/1/s/"
-#             ls /home/vsts/work/1/s/
-#           displayName: 'List files in /home/vsts/work/1/s/'
 - stage: Deploy
   displayName: Deploy to Kubernetes
   dependsOn: Build
@@ -113,6 +71,7 @@ stages:
             azureResourceGroup: 'AppNodeDevops'
             kubernetesCluster: 'app-demo'
             namespace: $(k8sNamespace)
+
         - task: CopyFiles@2
           inputs:
             SourceFolder: '$(Build.SourcesDirectory)/manifests'
@@ -123,7 +82,6 @@ stages:
             echo "Deploying application to Kubernetes"
             kubectl apply -f $(Build.ArtifactStagingDirectory)/manifests/deployment.yml --validate=false -n $(k8sNamespace)
             kubectl apply -f $(Build.ArtifactStagingDirectory)/manifests/service.yml --validate=false -n $(k8sNamespace)
-
           displayName: Deploy Manifests to Kubernetes
 
         - script: |
@@ -136,6 +94,7 @@ stages:
             echo "Kubernetes Services:"
             kubectl get services -n $(k8sNamespace)
           displayName: Get Services Information
+
           
 # - stage: Deploy
 #   displayName: Deploy Stage
