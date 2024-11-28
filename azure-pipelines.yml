@@ -78,7 +78,7 @@ stages:
             action: 'Push services'
           env:
             TAG: $(tag)
-        - publish: manifests
+        - publish: $(Build.SourcesDirectory)/manifests
           artifact: manifests
 - stage: Deploy
   displayName: Deploy Stage
@@ -88,11 +88,13 @@ stages:
       displayName: Deploy to Kubernetes
       pool:
         vmImage: $(vmImageName)
-      environment: 'app-demo' 
+      environment: 'app-demo.default' 
       strategy:
         runOnce:
           deploy:
             steps:
+            - checkout: self
+              fetchDepth: 1
             # - task: KubernetesManifest@1
             #   displayName: Create imagePullSecret
             #   inputs:
@@ -113,10 +115,10 @@ stages:
               inputs:
                 action: deploy
                 namespace: $(k8sNamespace)
-                manifests: '$(Build.SourcesDirectory)/manifests/*'
+                manifests: |
                 
-                  # $(Build.SourcesDirectory)/manifests/deployment.yml
-                  # $(Build.SourcesDirectory)/manifests/service.yml
+                  $(Build.SourcesDirectory)/manifests/deployment.yml
+                  $(Build.SourcesDirectory)/manifests/service.yml
                 containers: |
                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
