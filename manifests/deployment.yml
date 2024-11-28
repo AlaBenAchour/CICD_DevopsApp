@@ -5,7 +5,7 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  MONGO_URL: 'mongodb+srv://alabenachour97:ALABENACHOUR27@cluster0.wnqdc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+  MONGO_URL: bW9uZ29kYitzcnY6Ly9hbGFiZW5hY2hvdXI5NzpBTEFCRU5BQ0hPVVIyN0BjbHVzdGVyMC53bnFkYy5tb25nb2RiLm5ldC8/cmV0cnlXcml0ZXM9dHJ1ZSZ3PW1ham9yaXR5JmFwcE5hbWU9Q2x1c3RlcjA=
 
 ---
 apiVersion: apps/v1
