@@ -1,13 +1,13 @@
-#apiVersion: v1
-#kind: Secret
-#metadata:
-#  name: mongo-secret
-#  namespace: default
-#type: Opaque
-#data:
-#  MONGO_URL: mongodb+srv://alabenachour97:ALABENACHOUR27@cluster0.wnqdc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-secret
+  namespace: default
+type: Opaque
+data:
+  MONGO_URL: 'mongodb+srv://alabenachour97:ALABENACHOUR27@cluster0.wnqdc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
-#---
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
