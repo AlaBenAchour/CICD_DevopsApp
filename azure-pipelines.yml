@@ -88,7 +88,7 @@ stages:
       displayName: Deploy to Kubernetes
       pool:
         vmImage: $(vmImageName)
-      environment: 'app-demo.default' 
+      environment: 'app-demo' 
       strategy:
         runOnce:
           deploy:
