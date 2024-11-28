@@ -80,6 +80,44 @@ stages:
             TAG: $(tag)
         - upload: manifests
           artifact: manifests
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+  jobs:
+    - deployment: Deploy
+      displayName: Deploy to Kubernetes
+      pool:
+        vmImage: $(vmImageName)
+      environment: 'app-demo.default' 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            # - task: KubernetesManifest@1
+            #   displayName: Create imagePullSecret
+            #   inputs:
+            #     action: createSecret
+            #     namespace: $(k8sNamespace)
+            #     secretName: $(imagePullSecret)
+            #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+            #     # kubernetesServiceEndpoint: $(kubernetesServiceConnection)
+
+            - script: |
+                if [ ! -f "$(Build.SourcesDirectory)/manifests/deployment.yml" ]; then echo "deployment.yml is missing"; exit 1; fi
+                if [ ! -f "$(Build.SourcesDirectory)/manifests/service.yml" ]; then echo "service.yml is missing"; exit 1; fi
+              displayName: 'Validate manifest files'
+
+            - task: KubernetesManifest@1
+              displayName: Deploy to Kubernetes Cluster
+              inputs:
+                action: deploy
+                namespace: $(k8sNamespace)
+                manifests: |
+                  $(Build.SourcesDirectory)/manifests/deployment.yml
+                  $(Build.SourcesDirectory)/manifests/service.yml
+                containers: |
+                  $(containerRegistry)/$(imageRepositoryBackend):$(tag)
+                  $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
 
 # - stage: Deploy
 #   displayName: Deploy to Kubernetes
@@ -123,37 +161,4 @@ stages:
 #           displayName: Get Services Information
 
           
-- stage: Deploy
-  displayName: Deploy Stage
-  dependsOn: Build
-  jobs:
-    - deployment: Deploy
-      displayName: Deploy to Kubernetes
-      pool:
-        vmImage: $(vmImageName)
-      environment: 'app-demo.default' 
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            # - task: KubernetesManifest@1
-            #   displayName: Create imagePullSecret
-            #   inputs:
-            #     action: createSecret
-            #     namespace: $(k8sNamespace)
-            #     secretName: $(imagePullSecret)
-            #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-            #     # kubernetesServiceEndpoint: $(kubernetesServiceConnection)
 
-            
-            - task: KubernetesManifest@1
-              displayName: Deploy to Kubernetes Cluster
-              inputs:
-                action: deploy
-                namespace: $(k8sNamespace)
-                manifests: |
-                  $(Build.SourcesDirectory)/manifests/deployment.yml
-                  $(Build.SourcesDirectory)/manifests/service.yml
-                containers: |
-                  $(containerRegistry)/$(imageRepositoryBackend):$(tag)
-                  $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
