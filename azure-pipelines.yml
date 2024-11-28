@@ -78,7 +78,7 @@ stages:
             action: 'Push services'
           env:
             TAG: $(tag)
-        - upload: manifests
+        - publish: manifests
           artifact: manifests
 - stage: Deploy
   displayName: Deploy Stage
@@ -106,15 +106,17 @@ stages:
                 if [ ! -f "$(Build.SourcesDirectory)/manifests/deployment.yml" ]; then echo "deployment.yml is missing"; exit 1; fi
                 if [ ! -f "$(Build.SourcesDirectory)/manifests/service.yml" ]; then echo "service.yml is missing"; exit 1; fi
               displayName: 'Validate manifest files'
-
+            - script: dir $(Build.SourcesDirectory)/manifests
+              displayName: Cloning Manifest Files From Repo
             - task: KubernetesManifest@1
               displayName: Deploy to Kubernetes Cluster
               inputs:
                 action: deploy
                 namespace: $(k8sNamespace)
-                manifests: |
-                  $(Build.SourcesDirectory)/manifests/deployment.yml
-                  $(Build.SourcesDirectory)/manifests/service.yml
+                manifests: '$(Build.SourcesDirectory)/manifests/*'
+                
+                  # $(Build.SourcesDirectory)/manifests/deployment.yml
+                  # $(Build.SourcesDirectory)/manifests/service.yml
                 containers: |
                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
