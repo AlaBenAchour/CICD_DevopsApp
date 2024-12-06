@@ -159,6 +159,7 @@ stages:
 #             kubectl rollout status deployment/react-app -n $(k8sNamespace)
 #           displayName: Check Deployment Status
 
+
 #         - script: |
 #             echo "Kubernetes Services:"
 #             kubectl get services -n $(k8sNamespace)
