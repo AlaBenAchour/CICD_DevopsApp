@@ -37,6 +37,7 @@ spec:
             port: 5000
           initialDelaySeconds: 15
           periodSeconds: 10
+        progressDeadlineSeconds: 1200
 
 ---
 apiVersion: apps/v1
