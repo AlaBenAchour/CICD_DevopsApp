@@ -122,6 +122,7 @@ stages:
                 containers: |
                   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
                   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
+                validate: false
 
 # - stage: Deploy
 #   displayName: Deploy to Kubernetes
