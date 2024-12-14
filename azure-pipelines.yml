@@ -118,13 +118,17 @@ stages:
                 action: deploy
                 namespace: $(k8sNamespace)
                 manifests: |
-                
+                  
                   $(Build.SourcesDirectory)/manifests/deployment.yml
                   $(Build.SourcesDirectory)/manifests/service.yml
-                containers: |
-                  $(containerRegistry)/$(imageRepositoryBackend):$(tag)
-                  $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
-                validate: false
+            - script: |
+                  kubectl apply -f $(Build.ArtifactStagingDirectory)/manifests/deployment.yml --validate=false -n $(k8sNamespace)
+                  kubectl apply -f $(Build.ArtifactStagingDirectory)/manifests/service.yml --validate=false -n $(k8sNamespace)
+                  displayName: 'Apply Kubernetes Manifests'  
+                # containers: |
+                #   $(containerRegistry)/$(imageRepositoryBackend):$(tag)
+                #   $(containerRegistry)/$(imageRepositoryFrontend):$(tag)
+                # validate: false
 
 # - stage: Deploy
 #   displayName: Deploy to Kubernetes
