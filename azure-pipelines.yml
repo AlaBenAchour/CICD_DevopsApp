@@ -15,6 +15,7 @@ variables:
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
   k8sNamespace: 'default'
+  clusterId: 'app-demo-dns-gq6kz7r4.hcp.australiaeast.azmk8s.io'
   # imagePullSecret: 'acr-secret'
 
 stages:
@@ -105,6 +106,7 @@ stages:
             #     # kubernetesServiceEndpoint: $(kubernetesServiceConnection)
 
             - script: |
+                echo "Using Cluster ID: $(clusterId)"
                 if [ ! -f "$(Build.SourcesDirectory)/manifests/deployment.yml" ]; then echo "deployment.yml is missing"; exit 1; fi
                 if [ ! -f "$(Build.SourcesDirectory)/manifests/service.yml" ]; then echo "service.yml is missing"; exit 1; fi
               displayName: 'Validate manifest files'
